@@ -1,0 +1,17 @@
+{
+    "name": "tmolbik/php_pro_2",
+    "type": "project",
+    "license": "proprietary",
+    "autoload": {
+        "psr-4": {
+            "Tmolbik\\PhpPro\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "MaruSoul",
+            "email": "soulmeri0@gmail.com"
+        }
+    ],
+    "require": {}
+}
