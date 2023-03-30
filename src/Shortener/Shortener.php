@@ -2,22 +2,26 @@
 
 namespace Tmolbik\PhpPro\Shortener;
 
-use DateTime;
 use InvalidArgumentException;
-use Monolog\Logger;
 use Psr\Log\LoggerInterface;
+use RandomLib\Factory;
+use SecurityLib\Strength;
 use Tmolbik\PhpPro\IFileRepository;
 
 class Shortener implements IUrlDecoder, IUrlEncoder
 {
     protected array $links;
+    protected IUrlValidator $validator;
+
     public function __construct(
         protected IFileRepository $fileRepository,
-        protected int $length,
         protected LoggerInterface $logger,
-        protected IUrlValidator $validator = new UrlValidator(),
+        protected int $length = 6,
+        protected string $possible = '0123456789abcdefghijkmnopqrtvwxyz',
+        IUrlValidator $validator = null,
     )
     {
+        $this->validator = $validator ?? new UrlValidator($this->logger);
         $this->links = $this->fileRepository->getData();
     }
 
@@ -33,7 +37,14 @@ class Shortener implements IUrlDecoder, IUrlEncoder
 
     public function decode(string $code): string
     {
-        return $this->links[$code] ?? throw new InvalidArgumentException('Don\'t find the code');
+        $url = $this->links[$code] ?? '';
+
+        if (!$url) {
+            $this->logger->warning('Don\'t find the code ' . $code);
+            throw new InvalidArgumentException('Don\'t find the code ' . $code . PHP_EOL);
+        }
+
+        return $url;
     }
 
     public function encode(string $url): string
@@ -54,15 +65,14 @@ class Shortener implements IUrlDecoder, IUrlEncoder
         $key = $this->generateUniqueCode();
         $this->links[$key] = $url;
         $this->fileRepository->save($this->links);
-        $this->logger->info('New encode ' . $url . ' as ' . $key . PHP_EOL);
+        $this->logger->info('New encode ' . $url . ' as ' . $key);
         return $key;
     }
 
-    protected function generateUniqueCode(string $possible = '0123456789abcdefghijkmnopqrtvwxyz'): string
+    protected function generateUniqueCode(): string
     {
-        $date = new DateTime();
-        $str = $possible . mb_strtoupper($possible) . $date->getTimestamp();
-
-        return substr(str_shuffle($str), 0, $this->length);
+        $factory = new Factory();
+        $generator = $factory->getGenerator(new Strength());
+        return $generator->generateString($this->length, $this->possible);
     }
 }

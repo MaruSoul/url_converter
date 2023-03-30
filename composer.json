@@ -16,6 +16,8 @@
     "require": {
         "php": "^8.2",
         "ext-mbstring": "*",
-        "monolog/monolog": "^3.3"
+        "monolog/monolog": "^3.3",
+        "psr/log": "^3.0",
+        "ircmaxell/random-lib": "^1.2"
     }
 }

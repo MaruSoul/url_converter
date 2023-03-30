@@ -2,11 +2,14 @@
 
 namespace Tmolbik\PhpPro\Shortener;
 
+use GuzzleHttp\Client;
 use InvalidArgumentException;
+use Psr\Log\LoggerInterface;
 
 class UrlValidator implements IUrlValidator
 {
     public function __construct(
+        protected LoggerInterface $logger,
         protected array $allowedResponseCode = [200],
     )
     {
@@ -15,7 +18,8 @@ class UrlValidator implements IUrlValidator
     public function validate(string $url): bool
     {
         if (!filter_var($url, FILTER_VALIDATE_URL)) {
-            throw new InvalidArgumentException("Link is invalid");
+            $this->logger->warning('Link ' . $url . ' is invalid');
+            throw new InvalidArgumentException('Link ' . $url . ' is invalid' . PHP_EOL);
         }
 
         $context = stream_context_create(['http' => ['ignore_errors' => true]]);
@@ -28,7 +32,8 @@ class UrlValidator implements IUrlValidator
         $status = $match[1];
 
         if (!in_array($status, $this->allowedResponseCode)) {
-            throw new InvalidArgumentException("unexpected response status: {$status_line}");
+            $this->logger->warning('Unexpected response status: ' . $status);
+            throw new InvalidArgumentException('Unexpected response status: ' . $status . PHP_EOL);
         }
 
         return true;
