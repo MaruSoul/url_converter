@@ -1,12 +1,23 @@
 <?php
 
+use Monolog\Handler\StreamHandler;
+use Monolog\Level;
+use Monolog\Logger;
+use Tmolbik\PhpPro\FileRepository;
 use Tmolbik\PhpPro\Shortener\Shortener;
 
 require_once(__DIR__ . '/../vendor/autoload.php');
 
 try {
-    $url = 'https://www.php.net';
-    $shortener = new Shortener(__DIR__ . '/../data/links.json', 3);
+    // Create the logger
+    $logger = new Logger('my_logger');
+    // Now add some handlers
+    $logger->pushHandler(new StreamHandler(__DIR__.'/logs/../my_app_info.log', Level::Info));
+
+    $fileRepository = new FileRepository(__DIR__ . '/../data/links.json');
+
+    $url = 'https://www.youtube.com';
+    $shortener = new Shortener($fileRepository, 3, $logger);
     $code = $shortener->encode($url);
     var_dump($code);
 

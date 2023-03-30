@@ -2,23 +2,23 @@
 
 namespace Tmolbik\PhpPro\Shortener;
 
+use DateTime;
 use InvalidArgumentException;
+use Monolog\Logger;
+use Psr\Log\LoggerInterface;
+use Tmolbik\PhpPro\IFileRepository;
 
 class Shortener implements IUrlDecoder, IUrlEncoder
 {
     protected array $links;
-
     public function __construct(
-        protected string $filename,
+        protected IFileRepository $fileRepository,
         protected int $length,
+        protected LoggerInterface $logger,
         protected IUrlValidator $validator = new UrlValidator(),
     )
     {
-        if (file_exists($this->filename)) {
-            $this->links = json_decode(file_get_contents($this->filename), true);
-        } else {
-            $this->links = [];
-        }
+        $this->links = $this->fileRepository->getData();
     }
 
     public function getLength(): int
@@ -31,20 +31,6 @@ class Shortener implements IUrlDecoder, IUrlEncoder
         $this->length = $length;
     }
 
-    public function getFilename(): string
-    {
-        return $this->filename;
-    }
-
-    public function saveLinks(): void
-    {
-        if (!file_exists(dirname($this->filename))) {
-            mkdir(dirname($this->filename), 0775, true);
-        }
-
-        file_put_contents($this->filename, json_encode($this->links));
-    }
-
     public function decode(string $code): string
     {
         return $this->links[$code] ?? throw new InvalidArgumentException('Don\'t find the code');
@@ -52,37 +38,31 @@ class Shortener implements IUrlDecoder, IUrlEncoder
 
     public function encode(string $url): string
     {
+        // the array contains the url?
+        $key = array_search($url, $this->links);
+        if (!$key) {
+            $key = $this->encodeAnyway($url);
+        }
+
+        return $key;
+    }
+
+    public function encodeAnyway(string $url): string
+    {
         $this->validator->validate($url);
 
         $key = $this->generateUniqueCode();
         $this->links[$key] = $url;
-        $this->saveLinks();
+        $this->fileRepository->save($this->links);
+        $this->logger->info('New encode ' . $url . ' as ' . $key . PHP_EOL);
         return $key;
     }
 
     protected function generateUniqueCode(string $possible = '0123456789abcdefghijkmnopqrtvwxyz'): string
     {
-        $count = 0;
+        $date = new DateTime();
+        $str = $possible . mb_strtoupper($possible) . $date->getTimestamp();
 
-        do {
-            if ($count > 50) {
-                $this->length++;
-                $count = 0;
-            }
-
-            $key = '';
-            $maxlength = strlen($possible);
-            $i = 0;
-
-            while ($i < $this->length) {
-                $char = substr($possible, mt_rand(0, $maxlength - 1), 1);
-                $key .= $char;
-                $i++;
-            }
-
-            $count++;
-        } while (array_key_exists($key, $this->links));
-
-        return $key;
+        return substr(str_shuffle($str), 0, $this->length);
     }
 }
