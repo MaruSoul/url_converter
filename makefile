@@ -7,6 +7,6 @@ down:
 open-code:
 	code .
 to-workspace:
-	docker exec -it "php_pro_2" /bin/bash
+	docker exec -it "url_converter" /bin/bash
 rebuild:
 	docker-compose up --build -d

@@ -2,7 +2,7 @@ version: "3"
 services:
     php:
         # імʼя контейнеру, яке будемо використовувати при вході на контейнер
-        container_name: php_pro_2
+        container_name: url_converter
         build:
             context: ./
             # посилання на докерфайл з налаштуванням контейнеру
@@ -13,5 +13,5 @@ services:
             PHP_IDE_CONFIG: "serverName=docker"
         # прописуємо синхронізацію директорій
         volumes:
-            - ./:/srv/src/php_pro
+            - ./:/srv/src/url_converter
 
