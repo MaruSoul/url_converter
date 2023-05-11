@@ -1,6 +1,6 @@
 <?php
 
-namespace Tmolbik\PhpPro;
+namespace Tmolbik\UrlConverter;
 
 class FileRepository implements IFileRepository
 {

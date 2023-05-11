@@ -3,8 +3,8 @@
 use Monolog\Handler\StreamHandler;
 use Monolog\Level;
 use Monolog\Logger;
-use Tmolbik\PhpPro\FileRepository;
-use Tmolbik\PhpPro\Shortener\Shortener;
+use Tmolbik\UrlConverter\FileRepository;
+use Tmolbik\UrlConverter\Shortener\Shortener;
 
 require_once(__DIR__ . '/../vendor/autoload.php');
 

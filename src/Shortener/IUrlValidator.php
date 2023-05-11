@@ -1,6 +1,6 @@
 <?php
 
-namespace Tmolbik\PhpPro\Shortener;
+namespace Tmolbik\UrlConverter\Shortener;
 
 interface IUrlValidator
 {

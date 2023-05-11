@@ -1,12 +1,12 @@
 <?php
 
-namespace Tmolbik\PhpPro\Shortener;
+namespace Tmolbik\UrlConverter\Shortener;
 
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use RandomLib\Factory;
 use SecurityLib\Strength;
-use Tmolbik\PhpPro\IFileRepository;
+use Tmolbik\UrlConverter\IFileRepository;
 
 class Shortener implements IUrlDecoder, IUrlEncoder
 {
