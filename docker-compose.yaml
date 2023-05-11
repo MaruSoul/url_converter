@@ -14,4 +14,27 @@ services:
         # прописуємо синхронізацію директорій
         volumes:
             - ./:/srv/src/url_converter
-
+        networks:
+            - ${PROJECT_NAME}_app_network
+    # MySQL database service
+    db:
+        image: mysql:8.0
+        container_name: ${PROJECT_NAME}-mysql-db
+        restart: always
+        ports:
+            - "13302:3306"
+        volumes:
+            - ./docker/data/mysql:/var/lib/mysql
+            - ./docker/data/logs/mysql:/var/log/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_USER: ${DB_USERNAME}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+        env_file:
+            - ./.env
+        networks:
+            - ${PROJECT_NAME}_app_network
+networks:
+    url_converter_app_network:
+        driver: bridge
