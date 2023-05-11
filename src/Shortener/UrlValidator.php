@@ -6,7 +6,7 @@ use GuzzleHttp\Client;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 
-class UrlValidator implements IUrlValidator
+class UrlValidator implements UrlValidatorInterface
 {
     public function __construct(
         protected LoggerInterface $logger,

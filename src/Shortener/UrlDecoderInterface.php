@@ -4,7 +4,7 @@ namespace Tmolbik\UrlConverter\Shortener;
 
 use InvalidArgumentException;
 
-interface IUrlDecoder
+interface UrlDecoderInterface
 {
     /**
      * @param string $code

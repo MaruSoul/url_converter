@@ -2,7 +2,7 @@
 
 namespace Tmolbik\UrlConverter\Shortener;
 
-interface IUrlValidator
+interface UrlValidatorInterface
 {
     public function validate(string $url): bool;
 }

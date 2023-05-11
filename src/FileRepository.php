@@ -2,7 +2,7 @@
 
 namespace Tmolbik\UrlConverter;
 
-class FileRepository implements IFileRepository
+class FileRepository implements FileRepositoryInterface
 {
     public function __construct(
         protected string $filename,

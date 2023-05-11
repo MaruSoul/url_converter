@@ -6,19 +6,19 @@ use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use RandomLib\Factory;
 use SecurityLib\Strength;
-use Tmolbik\UrlConverter\IFileRepository;
+use Tmolbik\UrlConverter\FileRepositoryInterface;
 
-class Shortener implements IUrlDecoder, IUrlEncoder
+class Shortener implements UrlDecoderInterface, UrlEncoderInterface
 {
     protected array $links;
-    protected IUrlValidator $validator;
+    protected UrlValidatorInterface $validator;
 
     public function __construct(
-        protected IFileRepository $fileRepository,
-        protected LoggerInterface $logger,
-        protected int $length = 6,
-        protected string $possible = '0123456789abcdefghijkmnopqrtvwxyz',
-        IUrlValidator $validator = null,
+        protected FileRepositoryInterface $fileRepository,
+        protected LoggerInterface         $logger,
+        protected int                     $length = 6,
+        protected string                  $possible = '0123456789abcdefghijkmnopqrtvwxyz',
+        UrlValidatorInterface             $validator = null,
     )
     {
         $this->validator = $validator ?? new UrlValidator($this->logger);
