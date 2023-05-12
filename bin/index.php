@@ -3,10 +3,14 @@
 use Monolog\Handler\StreamHandler;
 use Monolog\Level;
 use Monolog\Logger;
+use Tmolbik\UrlConverter\Controllers\Links;
+use Tmolbik\UrlConverter\Models\Database;
 use Tmolbik\UrlConverter\FileRepository;
 use Tmolbik\UrlConverter\Shortener\Shortener;
 
 require_once(__DIR__ . '/../vendor/autoload.php');
+
+new Database();
 
 // Create the logger
 $logger = new Logger('my_logger');
@@ -15,10 +19,11 @@ $logger = new Logger('my_logger');
 $logger->pushHandler(new StreamHandler(__DIR__ . '/../logs/my_app_info.log', Level::Info));
 $logger->pushHandler(new StreamHandler(__DIR__ . '/../logs/my_app_warning.log', Level::Warning));
 
-$fileRepository = new FileRepository(__DIR__ . '/../data/links.json');
+// $dataStorage = new FileRepository(__DIR__ . '/../data/links.json');
+$dataStorage = new Links();
 
 $url = 'https://www.youtube.com';
-$shortener = new Shortener($fileRepository, $logger);
+$shortener = new Shortener($dataStorage, $logger, 10);
 try {
     $code = $shortener->encode($url);
     var_dump($code);
