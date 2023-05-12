@@ -2,17 +2,29 @@
 
 namespace Tmolbik\UrlConverter\Controllers;
 
+use Tmolbik\UrlConverter\DataStorageInterface;
 use Tmolbik\UrlConverter\Models\Link;
  
-class Links
+class Links implements DataStorageInterface
 {
-    public static function create($key, $link)
+    public function getName(): string
     {
-        $link = Link::create([
-            'key' => $key,
-            'link' => $link
-        ]);
+       return Link::getTableName();
+    }
 
-        return $link;
+    public function save(array $data): void
+    {
+        Link::truncate();
+        foreach ($data as $key => $link) {
+            Link::create([
+                'key' => $key,
+                'link' => $link,
+            ]);
+        }
+    }
+
+    public function getData(): array
+    {
+        return Link::pluck('link', 'key')->toArray();
     }
 }

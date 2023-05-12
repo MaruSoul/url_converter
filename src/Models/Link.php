@@ -8,4 +8,9 @@ class Link extends Model
 {
     protected $table = 'links';
     protected $fillable = ['key', 'link'];
+
+    public static function getTableName()
+{
+    return (new self())->getTable();
+}
 }
