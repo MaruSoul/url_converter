@@ -6,7 +6,7 @@ use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use RandomLib\Factory;
 use SecurityLib\Strength;
-use Tmolbik\UrlConverter\FileRepositoryInterface;
+use Tmolbik\UrlConverter\DataStorageInterface;
 
 class Shortener implements UrlDecoderInterface, UrlEncoderInterface
 {
@@ -14,15 +14,15 @@ class Shortener implements UrlDecoderInterface, UrlEncoderInterface
     protected UrlValidatorInterface $validator;
 
     public function __construct(
-        protected FileRepositoryInterface $fileRepository,
-        protected LoggerInterface         $logger,
-        protected int                     $length = 6,
-        protected string                  $possible = '0123456789abcdefghijkmnopqrtvwxyz',
-        UrlValidatorInterface             $validator = null,
+        protected DataStorageInterface $dataStorage,
+        protected LoggerInterface      $logger,
+        protected int                  $length = 6,
+        protected string               $possible = '0123456789abcdefghijkmnopqrtvwxyz',
+        UrlValidatorInterface          $validator = null,
     )
     {
         $this->validator = $validator ?? new UrlValidator($this->logger);
-        $this->links = $this->fileRepository->getData();
+        $this->links = $this->dataStorage->getData();
     }
 
     public function getLength(): int
@@ -64,7 +64,7 @@ class Shortener implements UrlDecoderInterface, UrlEncoderInterface
 
         $key = $this->generateUniqueCode();
         $this->links[$key] = $url;
-        $this->fileRepository->save($this->links);
+        $this->dataStorage->save($this->links);
         $this->logger->info('New encode ' . $url . ' as ' . $key);
         return $key;
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tmolbik\PhpPro\Models; 
+namespace Tmolbik\UrlConverter\Models; 
 
 use Illuminate\Database\Capsule\Manager as Capsule;
 

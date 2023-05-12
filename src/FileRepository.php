@@ -2,7 +2,7 @@
 
 namespace Tmolbik\UrlConverter;
 
-class FileRepository implements FileRepositoryInterface
+class FileRepository implements DataStorageInterface
 {
     public function __construct(
         protected string $filename,
@@ -10,7 +10,7 @@ class FileRepository implements FileRepositoryInterface
     {
     }
 
-    public function getFilename(): string
+    public function getName(): string
     {
         return $this->filename;
     }

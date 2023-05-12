@@ -2,9 +2,9 @@
 
 namespace Tmolbik\UrlConverter;
 
-interface FileRepositoryInterface
+interface DataStorageInterface
 {
-    public function getFilename(): string;
+    public function getName(): string;
     public function save(array $data): void;
     public function getData(): array;
 }
