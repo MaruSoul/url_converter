@@ -6,6 +6,6 @@ use \Illuminate\Database\Eloquent\Model;
 
 class Link extends Model
 {
-    protected $table = 'links';
+    protected $table = 'encoded_links';
     protected $fillable = ['key', 'link'];
 }

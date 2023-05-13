@@ -12,7 +12,7 @@ class Database
         $capsule->addConnection([
              'driver' => 'mysql',
              'host' => 'db',
-             'database' => 'database',
+             'database' => 'url_converter',
              'username' => 'user',
              'password' => 'root',
              'charset' => 'utf8',
