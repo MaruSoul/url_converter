@@ -12,11 +12,6 @@ class FileStorage implements DataStorageInterface
     {
     }
 
-    public function getName(): string
-    {
-        return $this->filename;
-    }
-
     public function save(array $data): void
     {
         if (!file_exists(dirname($this->filename))) {

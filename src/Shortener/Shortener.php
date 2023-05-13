@@ -6,7 +6,7 @@ use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use RandomLib\Factory;
 use SecurityLib\Strength;
-use Tmolbik\UrlConverter\DataStorageInterface;
+use Tmolbik\UrlConverter\DataStorage\DataStorageInterface;
 
 class Shortener implements UrlDecoderInterface, UrlEncoderInterface
 {
@@ -21,6 +21,7 @@ class Shortener implements UrlDecoderInterface, UrlEncoderInterface
         UrlValidatorInterface          $validator = null,
     )
     {
+        // TODO:: изменить жесткую зависимость
         $this->validator = $validator ?? new UrlValidator($this->logger);
         $this->links = $this->dataStorage->getData();
     }

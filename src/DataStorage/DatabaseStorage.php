@@ -7,11 +7,6 @@ use Tmolbik\UrlConverter\Models\Link;
 
 class DatabaseStorage implements DataStorageInterface
 {
-    public function getName(): string
-    {
-       return Link::getTableName();
-    }
-
     public function save(array $data): void
     {
        foreach ($data as $key => $link) {
