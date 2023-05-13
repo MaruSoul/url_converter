@@ -19,6 +19,7 @@
         "monolog/monolog": "^3.3",
         "psr/log": "^3.0",
         "ircmaxell/random-lib": "^1.2",
-        "illuminate/database": "^10.10"
+        "illuminate/database": "^10.10",
+        "ekaterinadavidovich/container": "^1.0"
     }
 }

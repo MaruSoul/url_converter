@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c92edf2746766be69a064f19fa3385cf",
+    "content-hash": "0d0368ac8c3c47e1d8620581f492e9c0",
     "packages": [
         {
             "name": "brick/math",
@@ -151,6 +151,47 @@
                 }
             ],
             "time": "2022-10-20T09:10:12+00:00"
+        },
+        {
+            "name": "ekaterinadavidovich/container",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/MaruSoul/container.git",
+                "reference": "73e686d708a2fee6e0674ade6e77b89bab8da72a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/MaruSoul/container/zipball/73e686d708a2fee6e0674ade6e77b89bab8da72a",
+                "reference": "73e686d708a2fee6e0674ade6e77b89bab8da72a",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.0",
+                "psr/container": "^2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Container\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Maru Soul",
+                    "email": "soulmeri0@gmail.com"
+                }
+            ],
+            "description": "This project is example my work for portfolio. Container is dependency injection container. It allows you to implement the dependency injection design pattern meaning that you can decouple your class dependencies and have the container inject them where they are needed.",
+            "support": {
+                "issues": "https://github.com/MaruSoul/container/issues",
+                "source": "https://github.com/MaruSoul/container/tree/1.0.0"
+            },
+            "time": "2023-04-30T23:28:01+00:00"
         },
         {
             "name": "illuminate/collections",
