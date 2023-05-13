@@ -2,7 +2,6 @@
 
 namespace Tmolbik\UrlConverter\DataStorage;
 
-use Tmolbik\UrlConverter\DataStorage\DataStorageInterface;
 use Tmolbik\UrlConverter\Models\Link;
 
 class DatabaseStorage implements DataStorageInterface

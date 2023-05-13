@@ -2,8 +2,6 @@
 
 namespace Tmolbik\UrlConverter\DataStorage;
 
-use Tmolbik\UrlConverter\DataStorage\DataStorageInterface;
-
 class FileStorage implements DataStorageInterface
 {
     public function __construct(
