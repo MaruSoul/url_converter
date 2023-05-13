@@ -7,6 +7,7 @@ use Monolog\Logger;
 use Tmolbik\UrlConverter\DataStorage\DatabaseStorage;
 use Tmolbik\UrlConverter\Models\Database;
 use Tmolbik\UrlConverter\Shortener\Shortener;
+use Tmolbik\UrlConverter\Shortener\UrlValidator;
 
 $container = new Container();
 
@@ -21,6 +22,13 @@ $container->add(LoggerInterface::class,
     ])
 );
 
+
+$container->add(UrlValidatorInterface::class, 
+    fn() => new UrlValidator(
+        $container->get(LoggerInterface::class)
+    ),
+);
+
 $container->add(Database::class, 
     fn() => new Database()
 );
@@ -29,5 +37,6 @@ $container->add(Shortener::class,
     fn() => new Shortener(
         $container->get(DataStorageInterface::class),
         $container->get(LoggerInterface::class),
+        $container->get(UrlValidatorInterface::class),
     )
 );

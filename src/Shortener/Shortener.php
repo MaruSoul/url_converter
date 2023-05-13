@@ -11,18 +11,15 @@ use Tmolbik\UrlConverter\DataStorage\DataStorageInterface;
 class Shortener implements UrlDecoderInterface, UrlEncoderInterface
 {
     protected array $links;
-    protected UrlValidatorInterface $validator;
 
     public function __construct(
-        protected DataStorageInterface $dataStorage,
-        protected LoggerInterface      $logger,
-        protected int                  $length = 6,
-        protected string               $possible = '0123456789abcdefghijkmnopqrtvwxyz',
-        UrlValidatorInterface          $validator = null,
+        protected DataStorageInterface      $dataStorage,
+        protected LoggerInterface           $logger,
+        protected UrlValidatorInterface     $validator,
+        protected int                       $length = 6,
+        protected string                    $possible = '0123456789abcdefghijkmnopqrtvwxyz',
     )
     {
-        // TODO:: изменить жесткую зависимость
-        $this->validator = $validator ?? new UrlValidator($this->logger);
         $this->links = $this->dataStorage->getData();
     }
 
