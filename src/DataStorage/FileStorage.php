@@ -1,18 +1,13 @@
 <?php
 
-namespace Tmolbik\PhpPro;
+namespace Tmolbik\UrlConverter\DataStorage;
 
-class FileRepository implements IFileRepository
+class FileStorage implements DataStorageInterface
 {
     public function __construct(
         protected string $filename,
     )
     {
-    }
-
-    public function getFilename(): string
-    {
-        return $this->filename;
     }
 
     public function save(array $data): void

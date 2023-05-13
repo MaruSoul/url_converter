@@ -1,28 +1,26 @@
 <?php
 
-namespace Tmolbik\PhpPro\Shortener;
+namespace Tmolbik\UrlConverter\Shortener;
 
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use RandomLib\Factory;
 use SecurityLib\Strength;
-use Tmolbik\PhpPro\IFileRepository;
+use Tmolbik\UrlConverter\DataStorage\DataStorageInterface;
 
-class Shortener implements IUrlDecoder, IUrlEncoder
+class Shortener implements UrlDecoderInterface, UrlEncoderInterface
 {
     protected array $links;
-    protected IUrlValidator $validator;
 
     public function __construct(
-        protected IFileRepository $fileRepository,
-        protected LoggerInterface $logger,
-        protected int $length = 6,
-        protected string $possible = '0123456789abcdefghijkmnopqrtvwxyz',
-        IUrlValidator $validator = null,
+        protected DataStorageInterface      $dataStorage,
+        protected LoggerInterface           $logger,
+        protected UrlValidatorInterface     $validator,
+        protected int                       $length = 6,
+        protected string                    $possible = '0123456789abcdefghijkmnopqrtvwxyz',
     )
     {
-        $this->validator = $validator ?? new UrlValidator($this->logger);
-        $this->links = $this->fileRepository->getData();
+        $this->links = $this->dataStorage->getData();
     }
 
     public function getLength(): int
@@ -64,7 +62,7 @@ class Shortener implements IUrlDecoder, IUrlEncoder
 
         $key = $this->generateUniqueCode();
         $this->links[$key] = $url;
-        $this->fileRepository->save($this->links);
+        $this->dataStorage->save($this->links);
         $this->logger->info('New encode ' . $url . ' as ' . $key);
         return $key;
     }

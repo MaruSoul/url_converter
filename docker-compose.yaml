@@ -2,7 +2,7 @@ version: "3"
 services:
     php:
         # імʼя контейнеру, яке будемо використовувати при вході на контейнер
-        container_name: php_pro_2
+        container_name: url_converter
         build:
             context: ./
             # посилання на докерфайл з налаштуванням контейнеру
@@ -13,5 +13,29 @@ services:
             PHP_IDE_CONFIG: "serverName=docker"
         # прописуємо синхронізацію директорій
         volumes:
-            - ./:/srv/src/php_pro
-
+            - ./:/srv/src/url_converter
+        networks:
+            - ${PROJECT_NAME}_app_network
+    # MySQL database service
+    db:
+        image: mysql:8.0
+        container_name: ${PROJECT_NAME}-mysql-db
+        restart: always
+        ports:
+            - "13302:3306"
+        volumes:
+            - ./docker/data/mysql:/var/lib/mysql
+            - ./docker/data/logs/mysql:/var/log/mysql
+            - ./docker/default-db-dumps:/docker-entrypoint-initdb.d
+        environment:
+            MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_USER: ${DB_USERNAME}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+        env_file:
+            - ./.env
+        networks:
+            - ${PROJECT_NAME}_app_network
+networks:
+    url_converter_app_network:
+        driver: bridge

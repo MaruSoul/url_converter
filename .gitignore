@@ -1,4 +1,5 @@
 .idea/*
 /vendor
 /data/*
+docker/data/*
 /logs/*

@@ -15,5 +15,5 @@ ENV TERM xterm-256color
 
 RUN php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer
 
-WORKDIR /srv/src/php_pro
+WORKDIR /srv/src/url_converter
 CMD [ "php-fpm"]

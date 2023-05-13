@@ -1,10 +1,10 @@
 <?php
 
-namespace Tmolbik\PhpPro\Shortener;
+namespace Tmolbik\UrlConverter\Shortener;
 
 use InvalidArgumentException;
 
-interface IUrlEncoder
+interface UrlEncoderInterface
 {
     /**
      * @param string $url
