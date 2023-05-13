@@ -1,15 +1,22 @@
 <?php
 
+use Container\Exceptions\EntityNotFoundException;
 use Tmolbik\UrlConverter\Models\Database;
 use Tmolbik\UrlConverter\Shortener\Shortener;
 
 require_once(__DIR__ . '/../vendor/autoload.php');
 require_once(__DIR__ . '/../src/container.php');
 
-$database = $container->get(Database::class);
-$shortener = $container->get(Shortener::class);
+/** @var Container\Container $container */
+try {
+    $database = $container->get(Database::class);
+    $shortener = $container->get(Shortener::class);
+} catch (EntityNotFoundException $e) {
+    die($e->getMessage());
+}
 
 $url = 'https://www.youtube.com';
+$url = 'https://www.linkedin.com';
 
 try {
     $shortUrl = $shortener->encode($url);

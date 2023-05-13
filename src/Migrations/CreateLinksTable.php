@@ -1,6 +1,6 @@
 <?php
 
-namespace Tmolbik\PhpPro\Migrations;
+namespace Tmolbik\UrlConverter\Migrations;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
 

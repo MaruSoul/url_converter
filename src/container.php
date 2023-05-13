@@ -2,12 +2,11 @@
 
 use Container\Container;
 use Monolog\Handler\StreamHandler;
-use Monolog\Level;
-use Monolog\Logger;
-use Tmolbik\UrlConverter\DataStorage\DatabaseStorage;
+use Monolog\{Level, Logger};
+use Psr\Log\LoggerInterface;
+use Tmolbik\UrlConverter\DataStorage\{DatabaseStorage, DataStorageInterface};
 use Tmolbik\UrlConverter\Models\Database;
-use Tmolbik\UrlConverter\Shortener\Shortener;
-use Tmolbik\UrlConverter\Shortener\UrlValidator;
+use Tmolbik\UrlConverter\Shortener\{Shortener, UrlValidator, UrlValidatorInterface};
 
 $container = new Container();
 
