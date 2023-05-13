@@ -1,6 +1,6 @@
 <?php
 
-namespace Tmolbik\UrlConverter;
+namespace Tmolbik\UrlConverter\DataStorage;
 
 interface DataStorageInterface
 {

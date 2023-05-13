@@ -1,8 +1,10 @@
 <?php
 
-namespace Tmolbik\UrlConverter;
+namespace Tmolbik\UrlConverter\DataStorage;
 
-class FileRepository implements DataStorageInterface
+use Tmolbik\UrlConverter\DataStorage\DataStorageInterface;
+
+class FileStorage implements DataStorageInterface
 {
     public function __construct(
         protected string $filename,
