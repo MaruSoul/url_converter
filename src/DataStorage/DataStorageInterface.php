@@ -4,6 +4,7 @@ namespace Tmolbik\UrlConverter\DataStorage;
 
 interface DataStorageInterface
 {
-    public function save(array $data): void;
-    public function getData(): array;
+    public function save(string $key, string $link): void;
+    public function getByKey(string $key): string;
+    public function getByLink(string $link): string;
 }

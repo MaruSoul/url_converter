@@ -6,18 +6,24 @@ use Tmolbik\UrlConverter\Models\Link;
 
 class DatabaseStorage implements DataStorageInterface
 {
-    public function save(array $data): void
+    public function save(string $key, string $link): void
     {
-       foreach ($data as $key => $link) {
-           Link::updateOrCreate(
-               ['key' => $key],
-               ['link' => $link]
-           );
-       }
+        Link::updateOrCreate(
+            ['key' => $key],
+            ['link' => $link]
+        );
     }
 
-    public function getData(): array
+    public function getByKey(string $key): string
     {
-        return Link::pluck('link', 'key')->toArray();
+        $link = Link::where('key', $key)->first();
+        return $link ? $link->link : ''; 
+    }
+
+
+    public function getByLink(string $link): string
+    {
+        $key = Link::where('link', $link)->first();
+        return $key ? $key->key : ''; 
     }
 }

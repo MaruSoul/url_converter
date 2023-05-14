@@ -10,8 +10,6 @@ use Tmolbik\UrlConverter\DataStorage\DataStorageInterface;
 
 class Shortener implements UrlDecoderInterface, UrlEncoderInterface
 {
-    protected array $links;
-
     public function __construct(
         protected DataStorageInterface      $dataStorage,
         protected LoggerInterface           $logger,
@@ -20,22 +18,11 @@ class Shortener implements UrlDecoderInterface, UrlEncoderInterface
         protected string                    $possible = '0123456789abcdefghijkmnopqrtvwxyz',
     )
     {
-        $this->links = $this->dataStorage->getData();
-    }
-
-    public function getLength(): int
-    {
-        return $this->length;
-    }
-
-    public function setLength(int $length): void
-    {
-        $this->length = $length;
     }
 
     public function decode(string $code): string
     {
-        $url = $this->links[$code] ?? '';
+        $url = $this->dataStorage->getByKey($code); 
 
         if (!$url) {
             $this->logger->warning('Don\'t find the code ' . $code);
@@ -47,23 +34,16 @@ class Shortener implements UrlDecoderInterface, UrlEncoderInterface
 
     public function encode(string $url): string
     {
-        // the array contains the url?
-        $key = array_search($url, $this->links);
-        if (!$key) {
-            $key = $this->encodeAnyway($url);
-        }
-
-        return $key;
-    }
-
-    public function encodeAnyway(string $url): string
-    {
         $this->validator->validate($url);
 
-        $key = $this->generateUniqueCode();
-        $this->links[$key] = $url;
-        $this->dataStorage->save($this->links);
-        $this->logger->info('New encode ' . $url . ' as ' . $key);
+        $key = $this->dataStorage->getByLink($url); 
+        
+        if (!$key) {
+            $key = $this->generateUniqueCode();;
+            $this->dataStorage->save($key, $url);
+            $this->logger->info('New encode ' . $url . ' as ' . $key);
+        }
+
         return $key;
     }
 
