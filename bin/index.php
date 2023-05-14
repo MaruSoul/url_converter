@@ -15,8 +15,7 @@ try {
     die($e->getMessage());
 }
 
-$url = 'https://www.youtube.com';
-$url = 'https://www.linkedin.com';
+$url = 'https://www.defense.gov';
 
 try {
     $shortUrl = $shortener->encode($url);
