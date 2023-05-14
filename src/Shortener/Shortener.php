@@ -23,16 +23,6 @@ class Shortener implements UrlDecoderInterface, UrlEncoderInterface
         $this->links = $this->dataStorage->getData();
     }
 
-    public function getLength(): int
-    {
-        return $this->length;
-    }
-
-    public function setLength(int $length): void
-    {
-        $this->length = $length;
-    }
-
     public function decode(string $code): string
     {
         $url = $this->links[$code] ?? '';
