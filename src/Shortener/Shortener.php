@@ -5,11 +5,14 @@ namespace Tmolbik\UrlConverter\Shortener;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use RandomLib\Factory;
+use RandomLib\Generator;
 use SecurityLib\Strength;
 use Tmolbik\UrlConverter\DataStorage\DataStorageInterface;
 
 class Shortener implements UrlDecoderInterface, UrlEncoderInterface
 {
+    protected Generator $generator;
+
     public function __construct(
         protected DataStorageInterface      $dataStorage,
         protected LoggerInterface           $logger,
@@ -18,6 +21,8 @@ class Shortener implements UrlDecoderInterface, UrlEncoderInterface
         protected string                    $possible = '0123456789abcdefghijkmnopqrtvwxyz',
     )
     {
+        $factory = new Factory();
+        $this->generator = $factory->getGenerator(new Strength());
     }
 
     public function decode(string $code): string
@@ -39,18 +44,11 @@ class Shortener implements UrlDecoderInterface, UrlEncoderInterface
         $key = $this->dataStorage->getByLink($url); 
         
         if (!$key) {
-            $key = $this->generateUniqueCode();;
+            $key = $this->generator->generateString($this->length, $this->possible);
             $this->dataStorage->save($key, $url);
             $this->logger->info('New encode ' . $url . ' as ' . $key);
         }
 
         return $key;
-    }
-
-    protected function generateUniqueCode(): string
-    {
-        $factory = new Factory();
-        $generator = $factory->getGenerator(new Strength());
-        return $generator->generateString($this->length, $this->possible);
     }
 }
