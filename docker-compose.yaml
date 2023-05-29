@@ -1,32 +1,31 @@
 version: "3"
 services:
-    php:
-        # імʼя контейнеру, яке будемо використовувати при вході на контейнер
-        container_name: url_converter
+    # PHP service
+    app:
+        container_name: ${PROJECT_NAME}-php-app
         build:
             context: ./
-            # посилання на докерфайл з налаштуванням контейнеру
             dockerfile: "docker/configs/php/Dockerfile"
-        # встановлюємо змінні оточення
         environment:
             XDEBUG_CONFIG: "remote_host={{YOUR_IP_ADDRESS}}"
             PHP_IDE_CONFIG: "serverName=docker"
-        # прописуємо синхронізацію директорій
         volumes:
-            - ./:/srv/src/url_converter
+            - ./:/var/www
         networks:
             - ${PROJECT_NAME}_app_network
+        links:
+          - db
+          - nginx
     # MySQL database service
     db:
         image: mysql:8.0
         container_name: ${PROJECT_NAME}-mysql-db
         restart: always
         ports:
-            - "13302:3306"
+            - "13303:3306"
         volumes:
             - ./docker/data/mysql:/var/lib/mysql
             - ./docker/data/logs/mysql:/var/log/mysql
-            - ./docker/default-db-dumps:/docker-entrypoint-initdb.d
         environment:
             MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
             MYSQL_DATABASE: ${DB_DATABASE}
@@ -34,6 +33,22 @@ services:
             MYSQL_PASSWORD: ${DB_PASSWORD}
         env_file:
             - ./.env
+        networks:
+            - ${PROJECT_NAME}_app_network
+    # Nginx service
+    nginx:
+        image: nginx:alpine
+        container_name: ${PROJECT_NAME}-php-nginx
+        restart: always
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "128m"
+        ports:
+            - 7003:80
+        volumes:
+            - .:/var/www
+            - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
         networks:
             - ${PROJECT_NAME}_app_network
 networks:
