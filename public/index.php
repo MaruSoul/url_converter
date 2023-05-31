@@ -15,16 +15,18 @@ try {
     die($e->getMessage());
 }
 
-echo 'Аби спробувати, перейдить наприклад за посиланням:  http://localhost?url=https://www.defense.gov, або http://localhost?key=value', PHP_EOL;
+echo 'Аби спробувати, перейдить наприклад за посиланням:  http://localhost:7003?url=https://www.defense.gov, або http://localhost:7003?key=value', PHP_EOL;
 
 
 echo 'Результат:', PHP_EOL;
+
 try {
     if (!empty($_GET['url'])) {
         $result = [];
         $value = $_GET['url'];
         $key = $shortener->encode($_GET['url']);
-        echo($key . ': ' . $value);
+        echo 'Дані згідно url', PHP_EOL;
+        echo $key, ': ', $value;
         echo PHP_EOL;
     } 
     
@@ -32,9 +34,9 @@ try {
         $result = [];
         $key = $_GET['key'];
         $value = $shortener->decode($_GET['key']);
-        echo($key . ': ' . $value);
+        echo 'Дані згідно key', PHP_EOL;
+        echo $key, ': ', $value;
     } 
 } catch (\Throwable $th) {
     die($th->getMessage());
 }
-

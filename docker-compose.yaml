@@ -13,9 +13,6 @@ services:
             - ./:/var/www
         networks:
             - ${PROJECT_NAME}_app_network
-        links:
-          - db
-          - nginx
     # MySQL database service
     db:
         image: mysql:8.0
