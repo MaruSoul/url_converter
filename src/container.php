@@ -1,8 +1,10 @@
 <?php
 
 use Container\Container;
+use GuzzleHttp\Client;
 use Monolog\Handler\StreamHandler;
 use Monolog\{Level, Logger};
+use Psr\Http\Client\ClientInterface;
 use Psr\Log\LoggerInterface;
 use Tmolbik\UrlConverter\DataStorage\{DatabaseStorage, DataStorageInterface};
 use Tmolbik\UrlConverter\Models\Database;
@@ -12,6 +14,10 @@ $container = new Container();
 
 $container->add(DataStorageInterface::class, 
     fn() => new DatabaseStorage()
+);
+
+$container->add(ClientInterface::class, 
+    fn() => new Client()
 );
 
 $container->add(LoggerInterface::class, 
@@ -24,7 +30,8 @@ $container->add(LoggerInterface::class,
 
 $container->add(UrlValidatorInterface::class, 
     fn() => new UrlValidator(
-        $container->get(LoggerInterface::class)
+        $container->get(LoggerInterface::class),
+        $container->get(ClientInterface::class),
     ),
 );
 

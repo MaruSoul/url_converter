@@ -39,7 +39,11 @@ class Shortener implements UrlDecoderInterface, UrlEncoderInterface
 
     public function encode(string $url): string
     {
-        $this->validator->validate($url);
+        try {
+            $this->validator->validate($url);
+        } catch (\Throwable $th) {
+            throw new InvalidArgumentException('Link ' . $url . ' is invalid' . PHP_EOL);
+        }
 
         $key = $this->dataStorage->getByLink($url); 
         
